@@ -27,6 +27,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 
 export type RootTabParamList = {
   Home: undefined;
+  ModalTabSettings: undefined;
   ModalSettings: ModalSettingsRoutesParams;
   ModalService: { service: string };
 };
