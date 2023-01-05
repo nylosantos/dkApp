@@ -17,13 +17,14 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           Home: {
             screens: {
-              TabOneScreen: "home",
+              Home: "home",
             },
           },
         },
       },
       ModalSettings: "modalSettings",
       ModalService: "modalService",
+      ModalAppScreen: "modalAppScreen",
     },
   },
 };

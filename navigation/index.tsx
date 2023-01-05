@@ -155,7 +155,7 @@ function RootNavigator() {
             title: "Service Details",
           }}
         >
-          {(props) => <ModalServiceScreen {...props} service="Basic" isLogin={isLogin} />}
+          {(props) => <ModalServiceScreen {...props} isLogin={isLogin} />}
         </Stack.Screen>
         <Stack.Screen
           name="ModalAppScreen"

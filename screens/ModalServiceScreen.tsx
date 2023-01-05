@@ -7,14 +7,16 @@ import { Button } from "../components/Button";
 
 interface ModalServicesRoutesParams {
   isLogin: boolean;
-  service: string;
+  service?: string;
 }
 
 export default function ModalServiceScreen({
-  service,
   isLogin,
 }: ModalServicesRoutesParams) {
   const navigation = useNavigation();
+  const route = useRoute()
+  const modalParams = route.params as ModalServicesRoutesParams
+  const service = modalParams.service
 
   const [serviceDetails, setServiceDetails] = useState({
     id: "",
