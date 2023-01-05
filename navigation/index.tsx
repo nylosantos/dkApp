@@ -18,6 +18,7 @@ import { Alert, ColorSchemeName, Pressable } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import Home from "../screens/Home";
+import ModalAppScreen from "../screens/ModalAppScreen";
 import ModalServiceScreen from "../screens/ModalServiceScreen";
 import ModalSettingsScreen from "../screens/ModalSettingsScreen";
 
@@ -39,10 +40,7 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
 }) {
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={DarkTheme}
-    >
+    <NavigationContainer linking={LinkingConfiguration} theme={DarkTheme}>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -92,6 +90,7 @@ function RootNavigator() {
       lastName: "",
     });
     setLogged(false);
+    handleSetIsLogin()
   }
   function handleSignIn(data: AuthProps) {
     if (
@@ -99,6 +98,7 @@ function RootNavigator() {
       data.password === "123456"
     ) {
       handleSetLogged(true);
+      handleSetIsLogin()
       return;
     }
     return Alert.alert("Login", "Incorret user or password. Try Again.");
@@ -151,11 +151,20 @@ function RootNavigator() {
         </Stack.Screen>
         <Stack.Screen
           name="ModalService"
-          component={ModalServiceScreen}
           options={{
             title: "Service Details",
           }}
-        />
+        >
+          {(props) => <ModalServiceScreen {...props} service="Basic" isLogin={isLogin} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="ModalAppScreen"
+          options={{
+            title: "Create React Native App",
+          }}
+        >
+          {(props) => <ModalAppScreen {...props} isLogin={isLogin} />}
+        </Stack.Screen>
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -193,15 +202,13 @@ function BottomTabNavigator({
     >
       <BottomTab.Screen
         name="Home"
-        component={Home}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
-          title: "Let's Start!",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           tabBarLabel: "Home",
           headerTitleAlign: "left",
           headerTitle: () => (
             <Pressable
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate("Home", {isLogin})}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
@@ -246,7 +253,9 @@ function BottomTabNavigator({
             </Pressable>
           ),
         })}
-      />
+      >
+        {(props) => <Home {...props} isLogin={isLogin} />}
+      </BottomTab.Screen>
       <BottomTab.Screen
         name="ModalTabSettings"
         options={{

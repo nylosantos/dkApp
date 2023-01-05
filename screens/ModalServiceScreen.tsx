@@ -1,30 +1,20 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { VStack, Text, Heading, ScrollView } from "native-base";
 import { useEffect, useState } from "react";
 import { Alert, Platform } from "react-native";
 import { Button } from "../components/Button";
 
-interface AuthProps {
-  email: string;
-  password: string;
-  firstName?: string;
-  lastName?: string;
-}
-
-interface RegisterProps {
-  registerEmail: string;
-  registerPassword: string;
-  confirmPassword: string;
-}
-
 interface ModalServicesRoutesParams {
+  isLogin: boolean;
   service: string;
 }
 
-export default function ModalServiceScreen() {
-  const route = useRoute();
-  const { service } = route.params as ModalServicesRoutesParams;
+export default function ModalServiceScreen({
+  service,
+  isLogin,
+}: ModalServicesRoutesParams) {
+  const navigation = useNavigation();
 
   const [serviceDetails, setServiceDetails] = useState({
     id: "",
@@ -95,9 +85,6 @@ export default function ModalServiceScreen() {
     }
   }, [service]);
 
-  const [isLogin, setIsLogin] = useState(true);
-  const [logged, setLogged] = useState(false);
-
   return (
     <>
       <VStack flex={1} alignItems="center" justifyContent="flex-start" mt={10}>
@@ -142,16 +129,21 @@ export default function ModalServiceScreen() {
           <Button
             title="Proceed to Checkout"
             w={"full"}
-            isDisabled={!isLogin}
-            isLogin={isLogin}
-            onPress={() => {}}
+            isLogin={true}
+            onPress={() => {
+              isLogin
+                ? navigation.navigate("ModalSettings")
+                : Alert.alert(
+                    `${serviceDetails.name} purchase Complete! \n\n Total: ${serviceDetails.price}`
+                  );
+            }}
           />
         </VStack>
         <Text color="gray.200" mt={4} fontSize="2xs" px={2} textAlign="center">
           By clicking "Proceed to Checkout" you agree and consent{"\n"}to the
           User Agreement, its policies, and the Privacy Policy.
         </Text>
-        <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+        <StatusBar style="light" />
       </VStack>
     </>
   );

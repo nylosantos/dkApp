@@ -3,6 +3,7 @@
  * https://reactnavigation.org/docs/typescript/
  */
 
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import {
   CompositeScreenProps,
@@ -19,17 +20,19 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   ModalSettings: ModalSettingsRoutesParams | undefined;
-  ModalService: { service: string };
+  ModalService: { service: string, isLogin: boolean };
+  ModalAppScreen: { isLogin: boolean };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-  Home: undefined;
+  Home: { isLogin: boolean };
   ModalTabSettings: undefined;
   ModalSettings: ModalSettingsRoutesParams;
-  ModalService: { service: string };
+  ModalService: { service: string, isLogin: boolean };
+  ModalAppScreen: { isLogin: boolean };
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
@@ -74,4 +77,23 @@ export interface ModalSettingsRoutesParams {
   handleSetRegisterUser: ({ field, data }: SetRegisterUserProps) => void;
   handleLogout: () => void;
   handleSignIn: (data: AuthProps) => void;
+}
+
+export interface ModalAppScreenRoutesParams {
+  isLogin: boolean;
+}
+
+export interface HomeScreenRoutesParams {
+  isLogin: boolean;
+}
+
+export interface SubMenuItemProps {
+  id: string,
+  icon: React.ComponentProps<typeof MaterialIcons>["name"]
+  name: string,
+  page: "reactApp" | "website" | "socialMedia" | "virtualReality" | "artificialIntelligence"
+}
+
+export interface MenuSubHeaderNavigationProps {
+  page: "reactApp" | "website" | "socialMedia" | "virtualReality" | "artificialIntelligence"
 }
